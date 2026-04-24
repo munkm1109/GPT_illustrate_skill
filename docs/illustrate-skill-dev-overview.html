@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>illustrate-skill — Developer Overview</title>
+  <style>
+    :root {
+      --bg: #0d0f18;
+      --surface: #141720;
+      --surface2: #1c1f2e;
+      --border: #252840;
+      --accent: #6366f1;
+      --accent-soft: rgba(99,102,241,0.12);
+      --accent-border: rgba(99,102,241,0.35);
+      --purple: #8b5cf6;
+      --gold: #f59e0b;
+      --green: #10b981;
+      --red: #ef4444;
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --dim: #64748b;
+      --code-bg: #0a0c14;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.65;
+    }
+
+    /* ── Header ── */
+    .topbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(13,15,24,0.92);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 48px;
+    }
+    .topbar-left { display: flex; align-items: center; gap: 12px; }
+    .topbar-name { font-size: 15px; font-weight: 700; letter-spacing: -0.2px; }
+    .badge {
+      font-size: 9px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; padding: 3px 7px; border-radius: 5px;
+      background: var(--accent); color: #fff;
+    }
+    .topbar-meta { font-size: 11px; color: var(--dim); font-family: monospace; }
+
+    /* ── Layout ── */
+    .wrap { max-width: 1080px; margin: 0 auto; padding: 0 48px; }
+
+    /* ── Hero ── */
+    .hero { padding: 64px 0 52px; border-bottom: 1px solid var(--border); }
+    .hero-eyebrow {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid var(--accent-border); background: var(--accent-soft);
+      color: #a5b4fc; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.6px;
+      padding: 4px 11px; border-radius: 20px; margin-bottom: 20px;
+    }
+    .hero h1 {
+      font-size: 40px; font-weight: 800; letter-spacing: -0.8px;
+      line-height: 1.15; margin-bottom: 18px;
+    }
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(130deg, #818cf8, #a78bfa, #c4b5fd);
+      -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .hero-sub {
+      max-width: 640px; color: var(--muted); font-size: 15px;
+      line-height: 1.75; margin-bottom: 32px;
+    }
+    .chain {
+      display: flex; flex-wrap: wrap; align-items: center; gap: 6px;
+    }
+    .chain-node {
+      background: var(--surface); border: 1px solid var(--border);
+      padding: 5px 11px; border-radius: 6px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace; font-size: 11px;
+      color: var(--muted);
+    }
+    .chain-arr { color: var(--dim); font-size: 11px; }
+
+    /* ── Section ── */
+    .section { padding: 52px 0; border-bottom: 1px solid var(--border); }
+    .section:last-of-type { border-bottom: none; }
+    .s-eyebrow {
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 1.2px; color: var(--accent); margin-bottom: 6px;
+    }
+    .s-title {
+      font-size: 22px; font-weight: 700; letter-spacing: -0.3px;
+      margin-bottom: 6px;
+    }
+    .s-desc { color: var(--muted); max-width: 580px; margin-bottom: 30px; }
+
+    /* ── Differentiator Card ── */
+    .diff-card {
+      position: relative; overflow: hidden;
+      background: linear-gradient(135deg,
+        rgba(99,102,241,0.13) 0%, rgba(139,92,246,0.07) 100%);
+      border: 1px solid rgba(99,102,241,0.45);
+      border-radius: 14px; padding: 32px;
+    }
+    .diff-card::after {
+      content: '';
+      position: absolute; top: -60px; right: -60px;
+      width: 220px; height: 220px;
+      background: radial-gradient(circle, rgba(99,102,241,0.18), transparent 70%);
+      pointer-events: none;
+    }
+    .diff-header { display: flex; align-items: flex-start; gap: 18px; margin-bottom: 22px; }
+    .diff-icon {
+      width: 52px; height: 52px; flex-shrink: 0;
+      background: linear-gradient(135deg, #6366f1, #8b5cf6);
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center; font-size: 24px;
+    }
+    .diff-h { font-size: 19px; font-weight: 700; margin-bottom: 4px; }
+    .diff-sub {
+      font-size: 11px; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 0.5px; color: #a5b4fc;
+    }
+    .diff-body { color: var(--muted); line-height: 1.8; margin-bottom: 22px; }
+    .diff-body strong { color: var(--text); }
+    .diff-stats {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+    }
+    .diff-stat {
+      background: rgba(0,0,0,0.35); border: 1px solid rgba(99,102,241,0.2);
+      border-radius: 9px; padding: 13px;
+    }
+    .diff-stat-label {
+      font-size: 9px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; color: #818cf8; margin-bottom: 5px;
+    }
+    .diff-stat-val { font-size: 12px; color: var(--text); line-height: 1.5; }
+
+    /* ── Advantages Grid ── */
+    .adv-grid {
+      display: grid; grid-template-columns: repeat(2, 1fr); gap: 14px;
+    }
+    .adv-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px;
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .adv-card:hover {
+      border-color: rgba(99,102,241,0.4);
+      background: var(--surface2);
+    }
+    .adv-top { display: flex; align-items: center; gap: 10px; margin-bottom: 9px; }
+    .adv-num {
+      width: 24px; height: 24px; flex-shrink: 0;
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: 6px; display: flex; align-items: center; justify-content: center;
+      font-size: 10px; font-weight: 800; color: var(--accent);
+      font-family: monospace;
+    }
+    .adv-title { font-size: 13px; font-weight: 700; }
+    .adv-body { color: var(--muted); font-size: 12px; line-height: 1.7; padding-left: 34px; }
+    .adv-tag {
+      display: inline-block; margin-top: 7px;
+      background: var(--code-bg); border: 1px solid var(--border);
+      color: var(--dim); font-size: 10px; font-family: monospace;
+      padding: 2px 7px; border-radius: 4px;
+    }
+
+    /* ── Comparison Table ── */
+    .cmp-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .cmp-table th {
+      text-align: left; padding: 10px 16px;
+      background: var(--surface); border-bottom: 2px solid var(--border);
+      font-size: 10px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--muted);
+    }
+    .cmp-table td {
+      padding: 11px 16px; border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .cmp-table tr:last-child td { border-bottom: none; }
+    .cmp-table td:first-child { font-weight: 600; color: var(--text); white-space: nowrap; }
+    .bad { color: #f87171; }
+    .good { color: var(--green); }
+
+    /* ── Pipeline ── */
+    .pipe { display: flex; flex-direction: column; }
+    .pipe-row { display: flex; gap: 0; }
+    .pipe-col {
+      display: flex; flex-direction: column; align-items: center;
+      width: 28px; flex-shrink: 0;
+    }
+    .dot {
+      width: 11px; height: 11px; border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4px var(--accent);
+      flex-shrink: 0; margin-top: 15px;
+    }
+    .dot.gate { background: var(--gold); box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4px var(--gold); }
+    .dot.done { background: var(--green); box-shadow: 0 0 0 2.5px var(--bg), 0 0 0 4px var(--green); }
+    .vline { width: 2px; flex: 1; background: var(--border); min-height: 16px; }
+    .pipe-body { flex: 1; padding: 8px 0 22px 16px; }
+    .pipe-name { font-size: 13px; font-weight: 600; margin-bottom: 3px; }
+    .pipe-detail { font-size: 12px; color: var(--dim); }
+    .gate-badge {
+      display: inline-block;
+      background: rgba(245,158,11,0.1); border: 1px solid rgba(245,158,11,0.3);
+      color: #fbbf24; font-size: 9px; font-weight: 800;
+      text-transform: uppercase; letter-spacing: 0.5px;
+      padding: 1px 6px; border-radius: 4px; margin-left: 8px;
+      vertical-align: middle;
+    }
+
+    /* ── Modes ── */
+    .mode-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .mode-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: 10px; padding: 20px;
+    }
+    .mode-name {
+      font-family: monospace; font-size: 15px; font-weight: 800;
+      color: var(--accent); margin-bottom: 9px;
+      letter-spacing: 0.3px;
+    }
+    .mode-desc { font-size: 12px; color: var(--muted); line-height: 1.65; margin-bottom: 10px; }
+    .mode-out { font-size: 11px; color: var(--dim); font-family: monospace; }
+
+    /* ── Commands ── */
+    .cmd { margin-bottom: 10px; }
+    .cmd-label {
+      font-size: 9px; font-weight: 800; text-transform: uppercase;
+      letter-spacing: 0.8px; color: var(--dim); margin-bottom: 6px;
+    }
+    .cmd-box {
+      background: var(--code-bg); border: 1px solid var(--border);
+      border-radius: 8px; padding: 13px 16px;
+      font-family: 'JetBrains Mono', 'Fira Code', monospace;
+      font-size: 11px; color: #a5b4fc; word-break: break-all; line-height: 1.7;
+    }
+
+    /* ── Common ── */
+    code {
+      background: var(--code-bg); border: 1px solid var(--border);
+      padding: 1px 5px; border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace; font-size: 11px; color: #a5b4fc;
+    }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 28px 0; display: flex; justify-content: space-between;
+      font-size: 11px; color: var(--dim); border-top: 1px solid var(--border);
+      margin-top: 0;
+    }
+
+    @media (max-width: 720px) {
+      .wrap { padding: 0 20px; }
+      .diff-stats, .adv-grid, .mode-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Topbar ── -->
+<div class="topbar">
+  <div class="topbar-left">
+    <span style="font-size:18px">🎨</span>
+    <span class="topbar-name">illustrate-skill</span>
+    <span class="badge">Dev Guide</span>
+  </div>
+  <div class="topbar-meta">render-bound SOP · theory-first production gate</div>
+</div>
+
+<div class="wrap">
+
+  <!-- ── Hero ── -->
+  <div class="hero">
+    <div class="hero-eyebrow"><span>●</span> AI Illustration SOP</div>
+    <h1>Structure-first<br><em>AI Illustration Pipeline</em></h1>
+    <p class="hero-sub">
+      장면 아이디어를 raw prompt로 바로 이미지 생성기로 보내지 않는 시스템.<br>
+      이론 → 결정 → 실행 → 검증의 강제 체인을 통과해야만 이미지 생성이 허용된다.
+    </p>
+    <div class="chain">
+      <span class="chain-node">사용자 요청</span>
+      <span class="chain-arr">→</span>
+      <span class="chain-node">SPEC / CRITIQUE / EXTEND</span>
+      <span class="chain-arr">→</span>
+      <span class="chain-node">Step 1~2.9 구조 설계</span>
+      <span class="chain-arr">→</span>
+      <span class="chain-node">object-research-skill</span>
+      <span class="chain-arr">→</span>
+      <span class="chain-node">Blender 3D blockout</span>
+      <span class="chain-arr">→</span>
+      <span class="chain-node">validate + pipeline</span>
+      <span class="chain-arr">→</span>
+      <span class="chain-node">✓ image generation</span>
+    </div>
+  </div>
+
+  <!-- ── Core Differentiator ── -->
+  <div class="section">
+    <div class="s-eyebrow">Core Differentiator</div>
+    <div class="s-title">왜 이 시스템인가</div>
+    <p class="s-desc">다른 AI 이미지 생성 워크플로우와 근본적으로 다른 핵심 차별점.</p>
+
+    <div class="diff-card">
+      <div class="diff-header">
+        <div class="diff-icon">📐</div>
+        <div>
+          <div class="diff-h">3D Perspective Pre-Verification</div>
+          <div class="diff-sub">모든 오브젝트를 투시법 위에서 3D로 먼저 계산·고정</div>
+        </div>
+      </div>
+
+      <p class="diff-body">
+        일반 AI 이미지 생성은 카메라 각도, 소실점, 오브젝트 배치를 전부 <strong>모델의 "학습된 감"에 위임</strong>한다.
+        결과적으로 손·발·배경 구조물이 공간적으로 붕괴되거나 뭉개지는 현상이 반복된다.
+        <br><br>
+        illustrate-skill은 <strong>Step 2.1~2.8</strong>에서 Blender로 장면 전체를 3D primitive로 blockout하고,
+        카메라 위치·horizon line·vanishing point·접지면·오브젝트 스케일을 <strong>수학적으로 고정</strong>한 뒤,
+        그 구조 데이터를 ControlNet/img2img 가이드로 이미지 생성기에 넘긴다.
+        이미지 생성기는 스타일 번역만 담당하고, 공간 구조 계산은 하지 않는다.
+        <br><br>
+        <strong>결과: AI 특유의 구조 뭉개짐이 극소화된다.</strong>
+      </p>
+
+      <div class="diff-stats">
+        <div class="diff-stat">
+          <div class="diff-stat-label">수행 단계</div>
+          <div class="diff-stat-val">Step 2.1 Perspective Rig<br>Step 2.8 Blender Blockout</div>
+        </div>
+        <div class="diff-stat">
+          <div class="diff-stat-label">수학적으로 고정되는 항목</div>
+          <div class="diff-stat-val">카메라 · horizon line · vanishing point<br>접지면 · 스케일 · 오브젝트 접촉점</div>
+        </div>
+        <div class="diff-stat">
+          <div class="diff-stat-label">출력되는 구조 증거</div>
+          <div class="diff-stat-val">clay / lineart / depth<br>normal / mask render passes</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Advantages ── -->
+  <div class="section">
+    <div class="s-eyebrow">System Advantages</div>
+    <div class="s-title">다른 구조적 강점</div>
+    <p class="s-desc">3D 투시 외에도 이 시스템이 제공하는 장점들.</p>
+
+    <div class="adv-grid">
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">01</div>
+          <div class="adv-title">Theory-Gated Execution</div>
+        </div>
+        <div class="adv-body">
+          매 단계마다 이론 파일(theory-*.md)을 먼저 읽어야만 실행이 허용된다.
+          "감으로 그리는" 게 아니라 THEORY → DECISION RULE → EXECUTION → OUTPUT → CHECK 순서를 강제 통과시킨다.
+          이론을 읽었다는 <code>theory-read-proof</code> artifact가 없으면 다음 단계로 넘어갈 수 없다.
+          <span class="adv-tag">references/theory-*.md</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">02</div>
+          <div class="adv-title">Spec-First — No Raw Prompt</div>
+        </div>
+        <div class="adv-body">
+          사용자 요청이 이미지 생성기로 직행하는 경로가 없다.
+          Step 1~8 + 2.1~2.9, 총 16개 이상의 구조 결정을 채운 설계서(spec artifact)를 먼저 완성해야 한다.
+          설계서 없이 이미지 생성은 시스템 레벨에서 차단된다.
+          <span class="adv-tag">illustrate-spec-template.md</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">03</div>
+          <div class="adv-title">Automated Script Validation Gates</div>
+        </div>
+        <div class="adv-body">
+          이미지 생성 직전에 두 개의 Python 스크립트가 자동 게이트로 작동한다.
+          <code>validate_illustrate_spec.py</code>는 필드 누락·placeholder·theory proof 미생성을 차단하고,
+          <code>run_illustrate_pipeline.py</code>는 PIPELINE READY 여부를 최종 확인한다.
+          사람의 판단이 아닌 코드가 게이트를 지킨다.
+          <span class="adv-tag">scripts/</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">04</div>
+          <div class="adv-title">Perspective-Plane Object Inventory</div>
+        </div>
+        <div class="adv-body">
+          장면 안의 모든 오브젝트를 투시 평면별로 목록화한다.
+          "도시 배경", "기계 느낌" 같은 뭉뚱그리기는 금지다.
+          support plane / vertical plane / overhead / background depth 중 어느 평면에 있고
+          어떤 역할을 하는지 명시해야 다음 단계가 열린다.
+          <span class="adv-tag">Step 2.2 Object Inventory</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">05</div>
+          <div class="adv-title">Anatomy-as-Object-Stack</div>
+        </div>
+        <div class="adv-body">
+          인체를 감으로 그리지 않는다.
+          age/sex/body-type → 흉곽·골반 비율 → 팔다리 비례 → 손 → 손가락 → 소품 접촉으로 이어지는
+          오브젝트 스택으로 잠근다.
+          손만 따로 예쁘게 맞추는 것은 시스템 레벨에서 금지된다.
+          <span class="adv-tag">Step 2.3 Anatomy Gate</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">06</div>
+          <div class="adv-title">Full Artifact Traceability</div>
+        </div>
+        <div class="adv-body">
+          모든 결정이 파일로 추적된다.
+          spec ← theory proof ← object research artifact ← invocation log ← Blender .blend ← render passes ← pipeline prompt.
+          어느 단계에서 무엇을 결정했는지 나중에 완전히 재현할 수 있다.
+          <span class="adv-tag">.omx/runs/</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">07</div>
+          <div class="adv-title">Thin Style Wrapper Architecture</div>
+        </div>
+        <div class="adv-body">
+          스타일 스킬은 base illustrate-skill을 복사·파괴하지 않는다.
+          reference-copy-skill로 만든 style-pack을 얇은 wrapper로 얹는 구조다.
+          Huke, Redjuice 등 어떤 스타일도 base process 위에 독립적으로 쌓인다.
+          스타일을 추가해도 검증 로직은 그대로 유지된다.
+          <span class="adv-tag">derived-style-skills/</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">08</div>
+          <div class="adv-title">Structure-Preserving Source Upgrade</div>
+        </div>
+        <div class="adv-body">
+          기존 이미지를 업그레이드할 때 원본 오브젝트의 정체성을 보존한다.
+          약한 구조를 glow·blur·noise로 덮는 것이 금지된다.
+          원본 오브젝트를 Step 2.2에 명시하고, 그 구조 위에서만 스타일을 번역한다.
+          <span class="adv-tag">Step 10 Source Upgrade Rules</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">09</div>
+          <div class="adv-title">Object Relationship Verification</div>
+        </div>
+        <div class="adv-body">
+          개별 오브젝트 조사 후, 오브젝트들이 서로 맞게 배치되는지 별도로 검증한다.
+          스케일 관계·occlusion 순서·접촉과 지지·충돌 체크·재질-조명 상호작용이 Step 2.6~2.7에서 확인된다.
+          손이 소품을 "장식처럼" 붙이는 것은 이 단계에서 차단된다.
+          <span class="adv-tag">Step 2.6, 2.7</span>
+        </div>
+      </div>
+
+      <div class="adv-card">
+        <div class="adv-top">
+          <div class="adv-num">10</div>
+          <div class="adv-title">Step-by-Step Critique Mode</div>
+        </div>
+        <div class="adv-body">
+          기존 그림·프롬프트를 Step 1~8 기준으로 단계별 진단하는 CRITIQUE 모드가 내장된다.
+          결과가 나쁠 때 "느낌이 별로"가 아니라 어느 단계의 어떤 결정이 원인인지 추적할 수 있다.
+          사용자 판정이 1차 verdict이고, 시스템이 그 이유를 진단한다.
+          <span class="adv-tag">CRITIQUE mode</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── vs. Standard ── -->
+  <div class="section">
+    <div class="s-eyebrow">vs. Standard Approach</div>
+    <div class="s-title">일반 AI 이미지 생성과의 차이</div>
+
+    <table class="cmp-table">
+      <thead>
+        <tr>
+          <th>항목</th>
+          <th>일반 AI 이미지 생성</th>
+          <th>illustrate-skill</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>공간 / 투시</td>
+          <td><span class="bad">모델 추정에 의존 → 붕괴 빈번</span></td>
+          <td><span class="good">Blender에서 수학적으로 사전 고정</span></td>
+        </tr>
+        <tr>
+          <td>손 · 소품 접촉</td>
+          <td><span class="bad">뭉개짐 / 부유 현상 다발</span></td>
+          <td><span class="good">body → hand → prop 체인으로 스택 고정</span></td>
+        </tr>
+        <tr>
+          <td>배경 구조물</td>
+          <td><span class="bad">노이즈 · 패턴으로 암묵적 대체</span></td>
+          <td><span class="good">object research로 draw-ready 지식화 후 배치</span></td>
+        </tr>
+        <tr>
+          <td>스타일 일관성</td>
+          <td><span class="bad">프롬프트 엔지니어링에 전적으로 의존</span></td>
+          <td><span class="good">derived-style wrapper + non-negotiable structure lock</span></td>
+        </tr>
+        <tr>
+          <td>구조 재현성</td>
+          <td><span class="bad">시드·파라미터 기억 외 방법 없음</span></td>
+          <td><span class="good">spec artifact로 모든 결정 완전 재현 가능</span></td>
+        </tr>
+        <tr>
+          <td>오류 진단</td>
+          <td><span class="bad">결과가 나빠도 원인 불명 — 재시도뿐</span></td>
+          <td><span class="good">CRITIQUE 모드로 Step별 원인 추적</span></td>
+        </tr>
+        <tr>
+          <td>이미지 생성 게이트</td>
+          <td><span class="bad">게이트 없음 — 언제든 생성 가능</span></td>
+          <td><span class="good">2단계 Python 검증기 통과 필수</span></td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- ── Modes ── -->
+  <div class="section">
+    <div class="s-eyebrow">Operation Modes</div>
+    <div class="s-title">세 가지 실행 모드</div>
+    <div class="mode-grid">
+      <div class="mode-card">
+        <div class="mode-name">SPEC</div>
+        <div class="mode-desc">새 장면·이미지를 설계할 때. "그려줘", "구도 잡아줘" 같은 요청의 기본 모드. Step 1~8 전체를 실행한다.</div>
+        <div class="mode-out">→ spec artifact · theory proof · handoff prompt</div>
+      </div>
+      <div class="mode-card">
+        <div class="mode-name">CRITIQUE</div>
+        <div class="mode-desc">기존 그림·프롬프트를 Step 1~8 기준으로 단계별 진단. 사용자 판정이 1차 verdict이고 시스템이 원인을 분석한다.</div>
+        <div class="mode-out">→ User Verdict · System Read · Next Move</div>
+      </div>
+      <div class="mode-card">
+        <div class="mode-name">EXTEND</div>
+        <div class="mode-desc">새 이론 파일 추가, 프로세스 단계 수정. 이 시스템 자체를 발전시킬 때 사용한다.</div>
+        <div class="mode-out">→ 새 theory-*.md · main-process.md 업데이트</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Pipeline ── -->
+  <div class="section">
+    <div class="s-eyebrow">Execution Pipeline</div>
+    <div class="s-title">SPEC 실행 체인 (render-bound)</div>
+    <p class="s-desc">이미지 생성이 목표인 요청의 전체 단계.</p>
+
+    <div class="pipe">
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Step 1 — Intent</div>
+          <div class="pipe-detail">시간·환경·역할·행동·감정축을 1문장으로 고정. 추상어("멋진", "분위기 있는") 금지.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Step 2 — Silhouette & Composition</div>
+          <div class="pipe-detail">구도 타입·검은 덩어리 위치·시선 흐름·무게중심 고정. 얼굴 디테일 이전에 큰 구도를 먼저 잠근다.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Step 2.1 — Perspective Rig</div>
+          <div class="pipe-detail">카메라 위치·horizon line·vanishing point·support plane 수학적 고정. 이 단계 없이 배경은 공간적으로 붕괴된다.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Step 2.2~2.7 — Structural Preflight</div>
+          <div class="pipe-detail">오브젝트 인벤토리 → anatomy gate → object knowledge query → object research → 오브젝트 관계 검증 → 인체-오브젝트 관계 검증.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Step 2.8 — Blender 3D Blockout</div>
+          <div class="pipe-detail">장면 전체를 primitive 3D로 환원. clay / lineart / depth / normal / mask 패스 생성. ControlNet 가이드 소스.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Step 2.9 — Image Translation Lock</div>
+          <div class="pipe-detail">구조 / 접지 / 스케일 / 손-소품 관계를 non-negotiable lock으로 고정. 스타일은 그 이후.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Step 3~8 — Value / Face / Line / Color / Texture / Final</div>
+          <div class="pipe-detail">구조 위에 그림 요소를 쌓는다. 각 단계는 이전 단계의 value/구조를 깨면 실패.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot gate"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">validate_illustrate_spec.py <span class="gate-badge">Gate</span></div>
+          <div class="pipe-detail">필드 누락·placeholder·theory proof 미생성·Blender 필드 누락 차단. 실패 시 해당 단계로 복귀.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot gate"></div><div class="vline"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">run_illustrate_pipeline.py <span class="gate-badge">Gate</span></div>
+          <div class="pipe-detail">PIPELINE READY 최종 확인. 통과 시에만 IMAGE_GEN_HANDOFF_PROMPT 사용 가능.</div>
+        </div>
+      </div>
+
+      <div class="pipe-row">
+        <div class="pipe-col"><div class="dot done"></div></div>
+        <div class="pipe-body">
+          <div class="pipe-name">Image Generation Handoff</div>
+          <div class="pipe-detail">3D 구조 증거(render passes)를 가이드로, 스타일 번역만 이미지 생성기에 위임.</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ── Commands ── -->
+  <div class="section">
+    <div class="s-eyebrow">Quick Reference</div>
+    <div class="s-title">핵심 명령어</div>
+
+    <div class="cmd">
+      <div class="cmd-label">SPEC 구조 검증</div>
+      <div class="cmd-box">python scripts/validate_illustrate_spec.py .omx/runs/&lt;slug&gt;-spec.md --strict-object-research</div>
+    </div>
+    <div class="cmd">
+      <div class="cmd-label">Pipeline 실행 + 프롬프트 저장</div>
+      <div class="cmd-box">python scripts/run_illustrate_pipeline.py .omx/runs/&lt;slug&gt;-spec.md --strict-object-research --emit-image-prompt .omx/runs/&lt;slug&gt;-pipeline-prompt.txt --print-prompt</div>
+    </div>
+    <div class="cmd">
+      <div class="cmd-label">Object Research Invocation Log</div>
+      <div class="cmd-box">python scripts/log_object_research_invocation.py --help</div>
+    </div>
+  </div>
+
+  <!-- ── Footer ── -->
+  <div class="footer">
+    <span>illustrate-skill · theory-first production gate · render-bound SOP</span>
+    <span>illustrate-skill/ · references/ · scripts/ · .omx/runs/</span>
+  </div>
+
+</div>
+</body>
+</html>
