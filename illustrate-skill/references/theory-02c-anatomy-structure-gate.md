@@ -12,7 +12,7 @@ For scenes with meaningful human figure read:
 2. choose a **sex classification overlay**
 3. choose the current **body-type baseline**
 4. bind the **hand module** to that body decision
-5. only then solve grips, finger grouping, and prop contact
+5. only then solve grips, individual finger-chain modeling, and prop contact
 
 ## Required age-band taxonomy
 
@@ -84,8 +84,27 @@ That means:
 - wrist thickness must agree with the forearm chain
 - gesture force must agree with shoulder / elbow setup
 - grip logic must agree with the body posture and prop scale
+- individual thumb / index / middle / ring / little finger chains must remain distinct unless physically hidden by a named occluder; even then their start, pressure direction, or endpoint should be implied
 
 If the hand looks correct only when isolated but breaks the figure, the hand solution is wrong.
+
+## Human-first object-density rule
+
+When the scene has many props, weapons, vehicles, buildings, effects, or particles,
+do not sacrifice human anatomy to preserve background density.
+
+Priority order:
+
+1. whole-body proportion, balance, and perspective fit
+2. head / ribcage / pelvis / limb chains
+3. hands, feet, grip, and contact anatomy
+4. props and support objects that touch the body
+5. background objects, effects, particles, and decorative detail
+
+This priority does not override perspective, geometric blockout, contact planes,
+or scale locks. It means that if density must be reduced, reduce props,
+costume noise, blood, signage, or background texture before merging or hiding
+human anatomy.
 
 ## Gate triggers
 

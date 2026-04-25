@@ -30,7 +30,8 @@ figure can accidentally read as giant, floating, or pasted onto the background.
 2. Block the environment as primitive forms: slabs, boxes, planes, grids,
    rails, mounted rectangles, and depth layers.
 3. Block the anatomy as primitive forms: head sphere/box, ribcage box, pelvis
-   box, cylindrical limbs, sphere joints, hand blocks, and foot wedges.
+   box, cylindrical limbs, sphere joints, hand blocks, individual finger
+   cylinders, and foot wedges.
 4. Bind anatomy primitives and environment primitives to the same perspective
    grid and scale system.
 5. Check contact, support, footprint size, object-object scale, and occlusion.
@@ -87,7 +88,7 @@ they become a rendered character:
 - pelvis: tilted box
 - shoulders / hips: pivot line between box masses
 - limbs: cylinder chains with sphere joints
-- hands: palm block, thumb wedge, grouped finger cylinders
+- hands: palm block, thumb wedge, and individual thumb / index / middle / ring / little finger cylinders
 - feet: wedge blocks aligned to the support plane
 
 The anatomy blockout is not complete until it explains support, balance,
@@ -158,7 +159,7 @@ Revise before rendering if any of these are true:
 - the figure reads as a giant because windows, doors, or parapets are too small
 - feet do not sit on a named support plane
 - anatomy cylinders do not connect to ribcage / pelvis boxes
-- hands grip a weapon without a clear palm / thumb / finger block relation
+- hands grip a weapon without clear palm / thumb / individual finger-chain relations
 - foreground scale is enlarged but nearby foreground architecture is not
 - buildings are random patterns instead of slabs, planes, and modules
 - style density appears before the viewer can read the blockout

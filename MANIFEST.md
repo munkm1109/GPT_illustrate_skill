@@ -1,10 +1,11 @@
 # Distribution Manifest
 
-Built: 2026-04-25 Asia/Seoul
+Built: 2026-04-25 Asia/Seoul (updated)
 
 ## Included
 
 - Base workflow: `illustrate-skill/`
+- Style skill builder: `reference-copy-skill/`
 - Dependency: `object-research-skill/`
 - Wrapped style: `derived-style-skills/Redjuice_Style_illustrate-skill/`
 - Validator/pipeline assets: `templates/`, `scripts/`

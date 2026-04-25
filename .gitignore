@@ -9,6 +9,7 @@ __pycache__/
 
 # Raw/private reference images are intentionally not part of this share repo
 Reference-*/
+!reference-copy-skill/
 *.jpg
 *.jpeg
 *.png

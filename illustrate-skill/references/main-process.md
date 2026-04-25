@@ -21,6 +21,7 @@ Current mapped theory:
 - `references/theory-02b-balance-cog.md` -> `STEP 2: SILHOUETTE & COMPOSITION`
 - `references/theory-02c-anatomy-structure-gate.md` -> `STEP 2.3: ANATOMY STRUCTURE GATE`
 - `references/theory-02d-geometric-blockout.md` -> `STEP 2.3: ANATOMY STRUCTURE GATE`, `STEP 2.8: 3D BLOCKOUT / MODELING CONTRACT`, `STEP 2.9: IMAGE TRANSLATION LOCK`
+- `references/theory-02e-object-density-human-priority.md` -> `STEP 2.2: OBJECT INVENTORY`, `STEP 2.3: ANATOMY STRUCTURE GATE`, `STEP 2.8: 3D BLOCKOUT / MODELING CONTRACT`, `STEP 2.9: IMAGE TRANSLATION LOCK`
 - `references/theory-03-lighting-value.md` -> `STEP 3: VALUE DESIGN`
 - `references/theory-04-face-eyes.md` -> `STEP 4: FACE`
 - `references/theory-04a-face-emotion-patterns.md` -> `STEP 4: FACE`
@@ -166,7 +167,7 @@ If any condition fails, rewrite Step 1 before continuing.
 - determine negative-space ratio
 - determine gaze-flow direction and return path
 - determine whether visible hands are focal, support, or safely abstract
-- determine whether finger grouping / prop grip logic needs explicit research
+- determine whether individual finger-chain / prop grip logic needs explicit research
 - when the pose is grounded, determine:
   - support leg
   - balance line
@@ -198,8 +199,8 @@ If any condition fails, rewrite Step 1 before continuing.
    - visible but safely simplified
    - visible and research-critical
 10. If hands are visible, write:
-   - palm / silhouette read
-   - finger grouping read
+    - palm / silhouette read
+   - individual thumb / index / middle / ring / little finger-chain read
 11. If the scene contains structurally uncertain props, signage, vehicles, machinery, architecture, source-image objects, or visible hands/fingers that are focal / expressive / foreshortened / gripping:
    - list them explicitly before Step 2.5
    - do not continue to Step 3 on guesswork alone
@@ -224,7 +225,7 @@ Example directional setup when the intent calls for pressure and danger:
 - negative-space balance
 - flow-direction map
 - hand silhouette note
-- finger grouping note
+- individual finger-chain note
 - supporting-leg note
 - balance-line note
 - shoulder/pelvis tilt note
@@ -234,7 +235,7 @@ Example directional setup when the intent calls for pressure and danger:
 - silhouette readable at thumbnail size
 - focal area is not swallowed by background
 - head / body / arm / prop shapes remain separable
-- if hands are visible, the hand silhouette and finger grouping are readable enough that they do not collapse into mitten shapes
+- if hands are visible, the hand silhouette and each finger chain are readable enough that they do not collapse into mitten shapes or fused groups
 - shard flow supports the face instead of competing with it
 - gaze stays inside the frame instead of escaping outward
 - for grounded poses, the mass reads as supported by the chosen foot or base
@@ -296,6 +297,9 @@ Required categories:
 - effect objects
 - text / glyph objects
 - unknown-object triage
+- object-density edge-case trigger check:
+  - if the scene has a human figure plus many vehicles, architecture, creatures, props, signs, particles, blood, smoke, crowds, or dense background systems, mark the edge case active
+  - when active, record which non-human details may be reduced before anatomy is sacrificed
 
 Unknown objects must be resolved by asking, researching, removing, replacing with a known object, intentionally abstracting with a declared function, or stopping the render-bound flow. Do not fake them as random pattern/noise.
 
@@ -321,6 +325,7 @@ Unknown objects must be resolved by asking, researching, removing, replacing wit
   - arms, shoulders, ribcage, pelvis, legs, or hands materially affect the read
   - the scene uses visible hands that are focal, expressive, foreshortened, or gripping
   - the request implies age-coded or sex-coded body language
+  - a human figure appears inside an object-density edge case
 - lock:
   - one age-band body base
   - one sex-classification overlay
@@ -336,7 +341,7 @@ Unknown objects must be resolved by asking, researching, removing, replacing wit
   - pelvis box
   - limb cylinder chains
   - sphere joints
-  - palm blocks, thumb wedges, grouped finger cylinders
+  - palm blocks, thumb wedges, and individual thumb / index / middle / ring / little finger cylinders
   - foot wedges aligned to the support plane
 
 ### Execution
@@ -413,6 +418,7 @@ Unknown objects must be resolved by asking, researching, removing, replacing wit
 - anatomy primitives are named before clothing, face, hair, fur, effects, or line detail are trusted
 - the primitive stack explains the torso / pelvis / limb connection before silhouette styling is allowed
 - if hands are visible, the hand module is clearly subordinate to the chosen body structure rather than guessed independently
+- if object-density edge-case is active, anatomy priority is explicit and non-human density reductions are named
 - if anatomy gating is skipped, the written note explains why the scene can safely avoid a full body-structure pass
 
 ## STEP 2.4: OBJECT KNOWLEDGE QUERY PLAN
@@ -661,6 +667,8 @@ Default to `loose guide` for painterly/editorial/anime final images unless the u
 
 - structure priority is above style density
 - the prompt explicitly says detail follows the locked support/contact/scale relationships rather than replacing them
+- for object-density edge cases, the prompt explicitly says human anatomy, hands/fingers, feet, grip, and contact survive before background density, particles, blood, costume noise, or creature texture
+- for object-density edge cases, the prompt names which non-human clutter can be reduced if it competes with anatomy
 - the prompt explicitly says whether Blender is a loose, medium, or strict guide
 - painterly compression cannot break named non-negotiables such as grip, support, scale, or required object identity
 - human figure scale follows perspective and anatomy; power hierarchy is not expressed by making the ruler physically oversized unless the user explicitly requests symbolic scale
@@ -841,8 +849,8 @@ Example default when the scene calls for high tension:
 - for visible hands, decide:
   - palm block direction
   - thumb wedge read
-  - finger grouping
-  - where individual finger separation matters vs where grouping is enough
+  - individual thumb / index / middle / ring / little finger chain direction
+  - where overlap or occlusion occurs without fusing fingers into a group
 
 ### Execution
 
@@ -869,7 +877,7 @@ Example default when the scene calls for high tension:
 7. If hands are visible:
    - block palm first
    - place thumb second
-   - separate fingers as grouped rhythms before splitting into individuals
+   - model thumb, index, middle, ring, and little finger as separate chains before costume, prop, blood, or background detail
    - keep finger thickness taper and knuckle cadence readable
    - show pressure / overlap when a prop is being held
 8. Decide where broad shapes carry the read without line, especially in larger shadow and light masses.
@@ -887,7 +895,7 @@ Example default when the scene calls for high tension:
 ### Check / Gate
 
 - sensitive parts use thin line logic while clothing/background use thicker broken logic
-- if hands are visible, palm / thumb / finger grouping reads before tiny wrinkle detail
+- if hands are visible, palm / thumb / individual finger-chain structure reads before tiny wrinkle detail
 - if hands are visible, finger lengths and tapers are not uniform
 - line weight is not uniform and remains controlled within 2-3 stages
 - shape rhythm supports focal flow

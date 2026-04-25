@@ -83,10 +83,17 @@ Hand off to `reference-copy-skill` first.
    - hard-surface background / architecture
    - weapon / prop
    - effects / text
-15. Unknown object policy:
+15. Object-density edge-case policy:
+   - If a human figure appears in a scene with many props, vehicles, creatures, buildings, weapons, signage, particles, blood, smoke, crowds, or dense background systems, treat it as an anatomy-first density edge case.
+   - Read `references/theory-02e-object-density-human-priority.md` and record the read in the theory proof.
+   - Keep perspective, geometric blockout, scale anchors, support planes, and contact planes intact.
+   - Within those structure locks, preserve body proportion, limb chains, hands, individual fingers, feet, grip, and contact anatomy before non-human detail.
+   - Reduce background density, particle count, blood overlap, costume micro-trim, signage, creature texture, or prop clutter before hiding or fusing human anatomy.
+   - Do not solve anatomy failures by pushing hands or feet unnaturally toward camera unless the composition intentionally requires that foreshortening.
+16. Unknown object policy:
    - If an object cannot be named, functionally defined, placed on a plane, or assigned a relationship, do not convert it into random texture, fake signage, fake machinery, or unidentified pattern.
    - Resolve it by asking the user, researching it, removing it, replacing it with a known object, intentionally abstracting it with a declared function, or stopping the render-bound flow.
-16. Blender / ControlNet hard-route policy:
+17. Blender / ControlNet hard-route policy:
    - Use Blender for every render-bound SPEC run. Do not treat Blender as conditional for final illustration or image-generation handoffs.
    - Set `BLENDER_BLOCKOUT_REQUIRED: yes` for all render-bound SPEC artifacts, including simple portraits; lower-complexity scenes may use a minimal camera/plane/mannequin blockout, but they still need Blender evidence.
    - When `BLENDER_BLOCKOUT_REQUIRED: yes`, create or reference a `.blend` file and a Blender Python render script before Step 3.
@@ -97,14 +104,14 @@ Hand off to `reference-copy-skill` first.
    - Do not let Blender harden the final image into a CAD-like, plastic, over-explained, or mannequin-like composition when the user’s target is painterly, editorial, anime, symbolic, or mood-first.
    - Do not express power hierarchy by making the ruler physically larger than perspective, anatomy, or adult male/female scale logic allows. For commercial illustration, show authority through staging, framing, value, gesture, costume, eye line, camera height, and detail priority rather than hieratic body-size distortion unless the user explicitly asks for symbolic scale.
    - If Blender is installed locally, prefer background rendering through the discovered `blender.exe` path; if unavailable, ask for/export viewport renders rather than pretending the `.blend` was reviewed.
-17. User checkpoints:
+18. User checkpoints:
    - Checkpoint A after perspective rig / composition direction when the view can branch.
    - Checkpoint B after unknown-object triage or object query when naming / replacement decisions are needed.
    - Checkpoint C after 3D blockout when scale, contact, or support logic can branch.
    - Checkpoint D before image generation when structure is locked and later corrections would be expensive.
    - If the choice is obvious and non-branching, record the assumed direction in the checkpoint field; if it is materially branching, ask the user before continuing.
-18. Execute the stages in `references/main-process.md` in order unless the user explicitly scopes the task to a subset of stages.
-19. Fill the stage results under clear headings and template fields, not just summary prose:
+19. Execute the stages in `references/main-process.md` in order unless the user explicitly scopes the task to a subset of stages.
+20. Fill the stage results under clear headings and template fields, not just summary prose:
    - intent
    - silhouette/composition
    - perspective rig
@@ -126,14 +133,14 @@ Hand off to `reference-copy-skill` first.
    - color/accent
    - texture
    - final check
-20. If background objects, props, furniture, machinery, weapons, signage, vehicles, architectural structures, source-image upgrade objects, visible hands/fingers, or anatomy-gated human figure structures need believable form, hand off to `object-research-skill` after Step 2.4 and before Step 2.6.
-21. When Step 2.5 is required for a render-bound scene, create an object-research artifact from `templates/object-research-artifact-template.md` and record its path in the spec field `OBJECT_RESEARCH_ARTIFACT_PATH`.
-22. After the object-research handoff, revise object scale, perspective locks, inter-object contact, body structure, limb-chain logic, hand/finger grouping, and material planning before continuing to value design.
-23. If the user requests the workspace reference look, read `references/style-guide.md`, record that read in the proof artifact, and fold its rules into the stage decisions only after structure locks remain readable.
-24. Before treating the spec as complete, run `python scripts/validate_illustrate_spec.py <spec-path> --strict-object-research`.
-25. If the validator fails, revise the failed sections instead of skipping forward.
-26. Before any final render handoff, run `python scripts/run_illustrate_pipeline.py <spec-path> --strict-object-research`.
-27. If the user ultimately wants an image render, finish the theory-driven spec first, pass validation and the pipeline runner, then hand off to image generation.
+21. If background objects, props, furniture, machinery, weapons, signage, vehicles, architectural structures, source-image upgrade objects, visible hands/fingers, or anatomy-gated human figure structures need believable form, hand off to `object-research-skill` after Step 2.4 and before Step 2.6.
+22. When Step 2.5 is required for a render-bound scene, create an object-research artifact from `templates/object-research-artifact-template.md` and record its path in the spec field `OBJECT_RESEARCH_ARTIFACT_PATH`.
+23. After the object-research handoff, revise object scale, perspective locks, inter-object contact, body structure, limb-chain logic, individual finger-chain modeling, and material planning before continuing to value design.
+24. If the user requests the workspace reference look, read `references/style-guide.md`, record that read in the proof artifact, and fold its rules into the stage decisions only after structure locks remain readable.
+25. Before treating the spec as complete, run `python scripts/validate_illustrate_spec.py <spec-path> --strict-object-research`.
+26. If the validator fails, revise the failed sections instead of skipping forward.
+27. Before any final render handoff, run `python scripts/run_illustrate_pipeline.py <spec-path> --strict-object-research`.
+28. If the user ultimately wants an image render, finish the theory-driven spec first, pass validation and the pipeline runner, then hand off to image generation.
 
 ## CRITIQUE mode
 
@@ -184,7 +191,8 @@ Hand off to `reference-copy-skill` first.
 - Blender hard-route does not replace Step 2.1-2.7; it consumes their perspective, object, anatomy, and relationship locks and turns them into a reviewable/conditionable blockout.
 - Blender hard-route is an evidence route, not a rigidity route: Step 2.8 must explicitly separate `STRUCTURAL_INVARIANTS_TO_PRESERVE` from `PAINTERLY_FREEDOMS_ALLOWED`, so the final handoff can use Blender as a loose guide when appropriate.
 - For scenes with full-body, humanoid, creature, architecture, vehicles, rooftops, streets, props, weapons, or strong perspective, Step 2.8 must use constructive geometric blockout: environment primitives and anatomy primitives must share one perspective grid and one scale system before detail is allowed.
-- Human anatomy must be blockout-first when the body read matters: head sphere / box, ribcage box or barrel, pelvis box, limb cylinder chains, sphere joints, hand blocks / thumb wedges / grouped finger cylinders, and foot wedges on the support plane.
+- Human anatomy must be blockout-first when the body read matters: head sphere / box, ribcage box or barrel, pelvis box, limb cylinder chains, sphere joints, hand blocks / thumb wedges / individual thumb-index-middle-ring-little finger cylinder chains, and foot wedges on the support plane.
+- Human anatomy has priority over object density. In scenes with many props, vehicles, creatures, buildings, blood, particles, or background details, reduce non-human detail before sacrificing body proportion, limb chains, hands, fingers, feet, grip, or contact anatomy. This priority must stay inside the locked perspective, scale, support plane, and geometric blockout logic.
 - Environment structure must also be blockout-first: slabs, boxes, planes, grids, mounted rectangles, support surfaces, facade modules, and scale anchors must be named before dense city, texture, signage, glow, or atmospheric detail.
 - Detail must follow the locked blockout where the blockout solves contact, support, scale, and named object relationships. Face, costume, hair, fur, smoke, glow, motion effects, line style, color accents, and texture are not allowed to resize the figure, hide broken limb chains, shrink architectural modules, or replace rigid object geometry.
 - Painterly compression is allowed after structure when it does not break support/contact/scale: crowds may merge into readable dark masses, stairs may compress for drama, background forms may subordinate to mood, and ornate detail may soften rigid block edges.
@@ -200,7 +208,7 @@ Hand off to `reference-copy-skill` first.
 - For structurally uncertain background objects, complex props, machinery, signage, vehicles, or architecture, default toward Step 2.5 instead of guessing.
 - For grounded full-body or standing poses, Step 2.3 must include support-leg, balance-line, and shoulder/pelvis logic that explains why the pose is physically supportable.
 - For anatomy-gated scenes, Step 2.5 should return the anatomy references that Step 2.7 will apply: age-band body base, sex overlay, and hand submodule when hands matter.
-- For visible hands that materially affect silhouette or storytelling, Step 2.3 must include a hand silhouette read and a finger-grouping note before Step 3.
+- For visible hands that materially affect silhouette or storytelling, Step 2.3 must include a hand silhouette read and an individual finger-chain modeling note before Step 3. Do not group or fuse fingers as a shortcut, even when the hand is small or the scene is object-dense.
 - When Step 2.5 is needed, Step 2.6 and Step 2.7 are mandatory before Step 3.
 - When Step 2.5 is needed for a render-bound scene, the object-research artifact path must exist before final completion.
 - The theory-read proof must exist and cover every required step theory before final completion.
