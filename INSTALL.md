@@ -1,6 +1,6 @@
 # Installation
 
-## Option A — use as a workspace repo
+## Option A - Use As A Workspace Repo
 
 This is the simplest route.
 
@@ -8,13 +8,13 @@ This is the simplest route.
 2. Open Codex with the clone as the working directory.
 3. Keep these folders together:
    - `illustrate-skill/`
+   - `reference-copy-skill/`
    - `object-research-skill/`
-   - `derived-style-skills/Redjuice_Style_illustrate-skill/`
    - `templates/`
    - `scripts/`
    - `illustration-library/`
 
-## Option B — copy skills to `$CODEX_HOME/skills`
+## Option B - Copy Skills To `$CODEX_HOME/skills`
 
 Run:
 
@@ -28,13 +28,16 @@ Default destination:
 %USERPROFILE%\.codex\skills
 ```
 
-The Redjuice wrapper supports both layouts:
+The installer copies only the three skill folders:
 
-- workspace layout: `derived-style-skills/Redjuice_Style_illustrate-skill` next to `../../illustrate-skill`
-- installed Codex layout: `Redjuice_Style_illustrate-skill` next to `../illustrate-skill`
+- `illustrate-skill`
+- `reference-copy-skill`
+- `object-research-skill`
 
-## Required runtime notes
+No derived style wrapper is installed by this package.
+
+## Required Runtime Notes
 
 - Python is required for validation scripts.
-- Blender is required by the latest render-bound base workflow when a SPEC is intended to reach image generation.
+- Blender is optional and only used when an approved render-bound route needs structural blockout/composite evidence.
 - Keep `templates/`, `scripts/`, and `illustration-library/` in the active workspace for full validator/pipeline behavior.

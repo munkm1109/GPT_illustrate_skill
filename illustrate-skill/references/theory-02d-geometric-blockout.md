@@ -35,10 +35,31 @@ figure can accidentally read as giant, floating, or pasted onto the background.
 4. Bind anatomy primitives and environment primitives to the same perspective
    grid and scale system.
 5. Check contact, support, footprint size, object-object scale, and occlusion.
-6. Split the blockout into:
+6. For scale-critical human-enterable scenes, add a temporary adult
+   scale-proxy dummy/mannequin beside a door/window/occupant landmark on the
+   same perspective grid. Use it to project adult height to the protagonist
+   footpoint and record the numeric ratio before any style work.
+7. Hide/delete the temporary dummy before user-facing composite/final art, but
+   retain its measurement trace: height line, footpoint, projected baseline,
+   and door/passenger/protagonist ratio markers.
+8. Split the blockout into:
    - structural invariants to preserve
    - painterly freedoms allowed
-7. Only after the blockout reads correctly, add anatomy refinement, clothing,
+9. For render-bound work, convert the blockout into a user-reviewable visual
+   guide composite before style or final prompt work:
+   - clay/solid pass as the base
+   - lineart/wire/mask pass for object boundaries
+   - depth/normal/mask inset when available
+   - perspective / vanishing lines
+   - protagonist footpoint and support plane
+   - projected baseline and scale witness markers
+   - retained scale-proxy dummy measurement trace, not the visible dummy body
+   - door/passenger/protagonist height markers when scale-critical
+   - contact/cut/grip markers when action depends on them
+10. Stop at the visual-guide checkpoint. Collect user feedback on the composite,
+   revise the blockout/composite if needed, and do not unlock pre-image handoff
+   until the final feedback is applied and the composite is approved.
+11. Only after the approved visual guide composite reads correctly, add anatomy refinement, clothing,
    face, hair, lighting, line, color, texture, and style density.
 
 ## Blender guide strength
@@ -139,6 +160,59 @@ Do not let:
 - blade, weapon, railing, or signage melt into effects
 
 If detail contradicts the primitive blockout, the detail loses.
+
+## Visual guide composite approval gate
+
+Render-bound specs must not rely on text-only projection math. The structure
+must become an actual image reference that the user can inspect before the
+final aesthetic stages continue.
+
+The composite is not final art. It is a control/reference image for camera,
+perspective, scale, support/contact, and object placement. The final image may
+ignore clay material, labels, arrows, and guide text, but it must obey the
+approved spatial relationships.
+
+The composite is also not the only authority. It is one reference in the
+handoff stack. The final generator must still receive or obey the source image
+conditioning status, immutable user commands, object research, perspective math,
+scale-proxy projection, Blender passes, visibility report, and compiled final
+prompt. If a handoff uses only the composite and drops those earlier locks, it
+has not followed the process.
+
+Exception/clarification for scale-critical work: the composite is not the only
+authority for the whole image, but it is the hard authority for scale. The
+approved composite's scale markers, projected baselines, footpoints,
+dummy-derived traces, door/passenger/container ratios, and screen occupancy
+must be followed. If the final image has attractive style but scale drifts from
+the composite, the image fails.
+
+For scale-proxy dummy workflows, the dummy is a temporary measuring object. It
+may appear in clay/blockout review, but it must be hidden/deleted before the
+visual guide composite and final art unless the user explicitly wants a visible
+extra person. Keep only the measurement trace/height line/baseline overlay.
+
+For image generation, the composite must be supplied as an actual image input
+or external ControlNet/depth/lineart control, not merely described in the text
+prompt. If the runtime only accepts text, the run is a prompt-only fallback and
+cannot claim strong structure conditioning.
+
+Required checkpoint logic:
+
+- `VISUAL_GUIDE_COMPOSITE_REQUIRED: yes`
+- create `VISUAL_GUIDE_COMPOSITE_PATH`
+- record source passes and overlays
+- for scale-critical scenes, record the hidden scale-proxy trace overlay and
+  its pass/fail projection verdict
+- show or reference the composite for user review
+- record `USER_VISUAL_GUIDE_FEEDBACK`
+- apply the final feedback
+- keep `PRE_IMAGE_HANDOFF_READY: no` until
+  `USER_VISUAL_GUIDE_APPROVAL_STATUS: approved` and
+  `USER_VISUAL_GUIDE_FEEDBACK_APPLIED: pass`
+- carry `PRE_COMPOSITE_EVIDENCE_STACK_LOCK` and
+  `COMPOSITE_IS_REFERENCE_NOT_SOLE_AUTHORITY` into Step 2.9 before generation
+- carry `SCALE_MUST_FOLLOW_COMPOSITE_PROMPT_LOCK` and Step 8
+  `SCALE_COMPOSITE_HARD_LOCK_VERDICT_CHECK` for scale-critical scenes
 
 Painterly compression is different from contradiction. It is allowed when it
 keeps the solved relationships readable:

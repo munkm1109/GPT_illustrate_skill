@@ -295,6 +295,8 @@
       <span class="chain-arr">→</span>
       <span class="chain-node">Blender 3D blockout</span>
       <span class="chain-arr">→</span>
+      <span class="chain-node">visual guide composite 확인</span>
+      <span class="chain-arr">→</span>
       <span class="chain-node">validate + pipeline</span>
       <span class="chain-arr">→</span>
       <span class="chain-node">✓ image generation</span>
@@ -322,7 +324,8 @@
         <br><br>
         illustrate-skill은 <strong>Step 2.1~2.8</strong>에서 Blender로 장면 전체를 3D primitive로 blockout하고,
         카메라 위치·horizon line·vanishing point·접지면·오브젝트 스케일을 <strong>수학적으로 고정</strong>한 뒤,
-        그 구조 데이터를 ControlNet/img2img 가이드로 이미지 생성기에 넘긴다.
+        clay / lineart / depth 패스와 투시선·스케일 마커를 <strong>visual guide composite</strong>로 합쳐 사용자 확인을 받는다.
+        승인된 composite와 lineart/depth 패스를 image_gen handoff package로 묶어 ControlNet-like 구조 참조로 이미지 생성기에 넘긴다.
         이미지 생성기는 스타일 번역만 담당하고, 공간 구조 계산은 하지 않는다.
         <br><br>
         <strong>결과: AI 특유의 구조 뭉개짐이 극소화된다.</strong>
@@ -428,7 +431,7 @@
         </div>
         <div class="adv-body">
           모든 결정이 파일로 추적된다.
-          spec ← theory proof ← object research artifact ← invocation log ← Blender .blend ← render passes ← pipeline prompt.
+          spec ← theory proof ← object research artifact ← invocation log ← Blender .blend ← render passes ← visual guide composite ← user feedback ← pipeline prompt.
           어느 단계에서 무엇을 결정했는지 나중에 완전히 재현할 수 있다.
           <span class="adv-tag">.omx/runs/</span>
         </div>
@@ -626,7 +629,7 @@
         <div class="pipe-col"><div class="dot"></div><div class="vline"></div></div>
         <div class="pipe-body">
           <div class="pipe-name">Step 3~8 — Value / Face / Line / Color / Texture / Final</div>
-          <div class="pipe-detail">구조 위에 그림 요소를 쌓는다. 각 단계는 이전 단계의 value/구조를 깨면 실패.</div>
+          <div class="pipe-detail">구조 위에 그림 요소를 쌓고 Step 8 Final Prompt Compiler에서 미학을 복원해 FINAL_IMAGE_PROMPT_COMPILED로 압축한다.</div>
         </div>
       </div>
 
@@ -642,7 +645,7 @@
         <div class="pipe-col"><div class="dot gate"></div><div class="vline"></div></div>
         <div class="pipe-body">
           <div class="pipe-name">run_illustrate_pipeline.py <span class="gate-badge">Gate</span></div>
-          <div class="pipe-detail">PIPELINE READY 최종 확인. 통과 시에만 IMAGE_GEN_HANDOFF_PROMPT 사용 가능.</div>
+          <div class="pipe-detail">PIPELINE READY 최종 확인. 통과 시에만 FINAL_IMAGE_PROMPT_COMPILED 사용 가능.</div>
         </div>
       </div>
 

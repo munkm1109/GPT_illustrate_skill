@@ -9,8 +9,8 @@ New-Item -ItemType Directory -Force -Path $DestRoot | Out-Null
 
 $Skills = @(
     @{ Source = 'illustrate-skill'; Dest = 'illustrate-skill' },
-    @{ Source = 'object-research-skill'; Dest = 'object-research-skill' },
-    @{ Source = 'derived-style-skills\Redjuice_Style_illustrate-skill'; Dest = 'Redjuice_Style_illustrate-skill' }
+    @{ Source = 'reference-copy-skill'; Dest = 'reference-copy-skill' },
+    @{ Source = 'object-research-skill'; Dest = 'object-research-skill' }
 )
 
 foreach ($skill in $Skills) {
@@ -22,4 +22,4 @@ foreach ($skill in $Skills) {
     Write-Host "Installed $($skill.Dest) -> $dst"
 }
 
-Write-Host "Done. Keep this repo's templates/, scripts/, and illustration-library/ in workspaces that need validation/pipeline gates."
+Write-Host "Done. No derived style wrappers were installed. Keep this repo's templates/, scripts/, and illustration-library/ in workspaces that need validation/pipeline gates."

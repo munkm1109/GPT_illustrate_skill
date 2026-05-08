@@ -15,12 +15,18 @@ Do not replace or fork `illustrate-skill` unless the user explicitly asks for a 
 1. Read `references/domain_context.md`.
 2. Read `references/invocation-routing.md`.
 3. Read `references/derived-skill-structure.md`.
-4. Read `references/style-pack-schema.md`.
-5. Read `references/reference-analysis-checklist.md`.
+4. Read `references/pixel-plane-reference-analysis.md`.
+5. Read `references/style-learning-pipeline.md`.
+6. Read `references/style-pack-schema.md`.
+7. Read `references/reference-analysis-checklist.md`.
 
 ## Core rule
 
-This skill builds **reference-derived wrappers**, not permission for direct living-artist imitation.
+This skill builds **reference-derived wrappers** from reusable visual grammar.
+
+Pixel-plane analysis is the official first-pass method for all reference analysis in this workspace. Measure the reference pixels before writing style rules, then translate the measured value / bloom / palette / edge / grid evidence into visual grammar. Do not replace the visual judgment pass; use the pixel-plane report as the evidence floor.
+
+Project default assumption: the user's reference sets are usually **AI-generated style-study outputs**, not original artist source art, unless the user says otherwise. Treat direct source-image imitation risk as lower under that provenance, but still prevent overfitting to a single reference image and still translate the set into repeatable drawing grammar rather than name-based mimicry.
 
 The output should:
 
@@ -28,6 +34,9 @@ The output should:
 - generate a new wrapper under `derived-style-skills/`
 - keep style rules local to that derivative
 - separate observation, inference, and anti-generic constraints
+- extract style as **visual grammar**: composition pressure, value design, face/eye handling, line/shape language, color control, texture density, motifs, and failure patterns
+- compile style into production image language through an `AESTHETIC_RENDER_BRIEF`, not raw analysis prose
+- declare a `STYLE_APPLICATION_BOUNDARY`: style affects rendering and mood, while base structure, object research, camera, perspective, scale, approved composites, and hard locks remain authoritative
 
 ## Modes
 
@@ -50,22 +59,32 @@ If a wrapper already exists and the user wants it improved, run:
 ## ANALYZE mode
 
 1. Inspect all provided references or the specified reference folder.
-2. Extract repeated traits aligned to the base illustration steps:
+2. Run the pixel-plane reference analysis from `references/pixel-plane-reference-analysis.md`. Use full source resolution by default; if the folder has more than 10 images, measure in batches of 10 and merge the batch JSON reports.
+3. Record `PIXEL_PLANE_ANALYSIS_REPORT`, `PIXEL_PLANE_ANALYSIS_JSON`, and `PIXEL_PLANE_VISUAL_GRAMMAR_SYNTHESIS` paths. If measurement is impossible, record why and mark the analysis as provisional rather than silently falling back to captions.
+4. Record `AI_REFERENCE_PROVENANCE_NOTE` when the references are user-provided AI outputs or otherwise non-original style studies.
+5. Build a `REFERENCE_STYLE_OBSERVATION_MATRIX` aligned to the base illustration steps:
    - intent / mood
-   - composition / silhouette
-   - value / lighting
-   - face / emotion
-   - line / shape
-   - color / accents
-   - texture / density
+   - composition / silhouette / focal pressure
+   - value / lighting / mass grouping
+   - face / emotion / eye grammar
+   - line / shape / edge control
+   - color / accents / palette release
+   - texture / density / surface treatment
    - motifs
    - anti-drift / do-not patterns
-3. Separate:
+6. Extract `STYLE_GRAMMAR_EXTRACTION` from repeated traits only. Prefer measured pixel-plane evidence, ratios, hierarchy, placement rules, edge behavior, density behavior, and palette logic over image captions.
+7. Run `COPY_RISK_FILTER` as an anti-overfit transform: do not copy a single reference composition, pose, costume, exact symbol arrangement, or accidental artifact; preserve reusable grammar.
+8. Define `STYLE_APPLICATION_BOUNDARY`: style may bend mood/rendering, but must not override base structure, object research, perspective math, scale hard locks, user-approved visual guide composites, or final scene requirements.
+9. Compile an `AESTHETIC_RENDER_BRIEF` for image generation: compact natural visual language, no schema jargon, no validator prose, no field-name leakage.
+10. Separate:
    - direct observation
    - inferred preference
-4. Write:
+   - production rule
+   - anti-generic / anti-overfit rule
+11. Write:
    - `style-pack.md` draft
    - `reference-index.md`
+   - pixel-plane report and visual-grammar synthesis
    - optional deeper analysis notes when line/plane grammar matters
 
 ## GENERATE mode
@@ -83,18 +102,22 @@ If a wrapper already exists and the user wants it improved, run:
    - it loads the base illustration process
    - then loads its own style pack
    - then applies style-specific deltas without mutating the base skill
+   - then hands final wording to the base final-prompt compiler / aesthetic recovery path
 5. Explicitly state:
    - the base process was preserved
-   - the derivative is reference-derived
+   - the derivative is reference-derived from visual grammar
    - the derivative should resist generic model-default drift
+   - style cannot override camera, perspective, scale, object, source-image, composite, or handoff locks
 
 ## REFINE mode
 
 1. Read the existing derivative skill and its local references.
 2. Determine whether the update is:
    - new evidence from references
-   - stronger style constraints
-   - better anti-generic rules
+   - stronger style grammar extraction
+   - better aesthetic render brief wording
+   - stronger style application boundary
+   - stronger anti-generic / anti-overfit rules
    - better trigger / routing behavior
 3. Update only the derivative skill and its local references.
 4. Leave `illustrate-skill` unchanged unless the user explicitly asks to evolve the base methodology.
@@ -122,6 +145,7 @@ Do **not** use this skill when the user only wants a single image planned in an 
   - `SKILL.md` = routing + workflow
   - `references/` = style knowledge
 - Align all observations to the base step model so the wrapper remains compatible with the original process.
+- Never let style-wrapper wording weaken existing `illustrate-skill` structure locks; if style conflicts with approved composite scale or perspective, the structural lock wins.
 
 ## Output contract
 
@@ -130,6 +154,9 @@ Return:
 - derivative skill path
 - style-pack summary
 - reference index summary
+- style grammar summary
+- aesthetic render brief summary
+- style application boundary summary
 - note describing whether this was:
   - analyze only
   - generate
